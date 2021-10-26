@@ -1,0 +1,178 @@
+##########################
+# MATRIX input parameter #
+##########################
+
+#----------------------\
+# general run settings |
+#----------------------/
+process_class   =  pp-emmupvmve~+X  #  process id
+E               =  6500.       #  energy per beam
+coll_choice     =  1           #  (1) PP collider; (2) PPbar collider
+flavor_scheme   =  1           #  (1) four-flavor scheme; (2) five-flavor scheme; note: use consistent PDFs
+
+
+#----------------\
+# scale settings |
+#----------------/
+scale_ren       =  80.385      #  renormalization (muR) scale
+scale_fact      =  80.385      #  factorization (muF) scale
+dynamic_scale   =  0           #  dynamic ren./fac. scale
+                               #  0: fixed scale above
+                               #  1: invariant mass (Q) of system (of the colourless final states)
+                               #  2: transverse mass (mT^2=Q^2+pT^2) of system (of the colourless final states)
+                               #  3: sum of W-boson transverse masses computed with W pole mass:
+                               #     sqrt(M_W^2+pT_enu^2)+sqrt(M_W^2+pT_munu^2)
+                               #  4: sum of W-boson transverse masses:
+                               #     sqrt(m_enu^2+pT_enu^2)+sqrt(m_munu^2+pT_munu^2)
+factor_central_scale = 1       #  relative factor for central scale (important for dynamic scales)
+scale_variation  = 1           #  switch for muR/muF uncertainties (0) off; (1) 7-point (default); (2) 9-point variation
+variation_factor = 2           #  symmetric variation factor; usually a factor of 2 up and down (default)
+
+
+#------------------------------\
+# order-dependent run settings |
+#------------------------------/
+# LO
+run_LO          =  1           #  switch for LO cross section (1) on; (0) off
+LHAPDF_LO       =  NNPDF30_lo_as_0118_nf_4 #  LO LHAPDF set
+PDFsubset_LO    =  0           #  member of LO PDF set
+precision_LO    =  1.e-2       #  precision of LO cross section
+
+# NLO
+run_NLO         =  1           #  switch for NLO cross section (1) on; (0) off
+LHAPDF_NLO      =  NNPDF30_nlo_as_0118_nf_4 #  NLO LHAPDF set
+PDFsubset_NLO   =  0           #  member of NLO PDF set
+precision_NLO   =  1.e-2       #  precision of NLO cross section
+NLO_subtraction_method = 1     #  switch to use (2) qT subtraction (1) Catani-Seymour at NLO
+
+# NNLO
+run_NNLO        =  1           #  switch for NNLO cross section (1) on; (0) off
+LHAPDF_NNLO     =  NNPDF30_nnlo_as_0118_nf_4 #  NNLO LHAPDF set
+PDFsubset_NNLO  =  0           #  member of NNLO PDF set
+precision_NNLO  =  1.e-2       #  precision of NNLO cross section
+loop_induced    =  1           #  switch to turn on (1) and off (0) loop-induced gg channel
+
+
+#----------------------------\
+# settings for fiducial cuts |
+#----------------------------/
+# Jet algorithm
+jet_algorithm = 3              #  (1) Cambridge-Aachen (2) kT (3) anti-kT
+jet_R_definition = 0           #  (0) pseudo-rapidity (1) rapidity
+jet_R = 0.4                    #  DeltaR
+
+# Jet cuts
+define_pT jet = 30.            #  requirement on jet transverse momentum (lower cut)
+define_eta jet = 2.4           #  requirement on jet pseudo-rapidity (upper cut)
+define_y jet = 1.e99           #  requirement on jet rapidity (upper cut)
+n_observed_min jet = 0         #  minimal number of observed jets (with cuts above)
+n_observed_max jet = 10         #  maximal number of observed jets (with cuts above)
+
+# Lepton cuts
+define_pT lep = 20.             #  requirement on lepton transverse momentum (lower cut)
+define_eta lep = 2.5         #  requirement on lepton pseudo-rapidity (upper cut)
+define_y lep = 1.e99           #  requirement on lepton rapidity (upper cut)
+n_observed_min lep = 2         #  minimal number of observed leptons (with cuts above)
+n_observed_max lep = 99        #  maximal number of observed leptons (with cuts above)
+
+# Electron cuts
+define_pT e = 20.              #  requirement on electron transverse momentum (lower cut)
+define_eta e = 2.5            #  requirement on electron pseudo-rapidity (upper cut)
+define_y e = 1.e99             #  requirement on electron rapidity (upper cut)
+n_observed_min e = 1           #  minimal number of observed electrons (with cuts above)
+n_observed_max e = 99          #  maximal number of observed electrons (with cuts above)
+
+# Muon cuts
+define_pT mu = 20.             #  requirement on muon transverse momentum (lower cut)
+define_eta mu = 2.5            #  requirement on muon pseudo-rapidity (upper cut)
+define_y mu = 1.e99            #  requirement on muon rapidity (upper cut)
+n_observed_min mu = 1          #  minimal number of observed muons (with cuts above)
+n_observed_max mu = 99         #  maximal number of observed muons (with cuts above)
+
+# Neutrino cuts
+define_pT missing = 20.        #  requirement on transverse momentum of sum of all neutrinos (lower cut)
+
+# Blocks with user-defined cuts (only used if defined in 'MATRIX/prc/$process/user/specify.cuts.cxx')
+# Mandatory cuts for this process:
+# -- none
+#
+
+user_switch M_leplep  = 1               #  switch to turn on (1) and off (0) cuts on lepton-lepton invariant mass
+user_cut min_M_leplep = 20.             #  requirement on lepton-lepton invariant mass (lower cut)
+user_cut max_M_leplep = 1.e99           #  requirement on lepton-lepton invariant mass (upper cut)  
+
+user_switch R_leplep = 0                #  switch to turn on (1) and off (0) cuts on lepton-lepton separation
+user_cut min_R_leplep = 0.1             #  requirement on lepton-lepton separation in y-phi-plane (lower cut)
+
+user_switch R_ejet = 0                  #  switch to turn on (1) and off (0) cuts on electron-jet separation
+user_cut min_R_ejet = 0.                #  requirement on electron-jet separation in y-phi-plane (lower cut);
+                                        #  jets to close to electrons are removed by creating a modified jet content
+
+user_switch R_mujet = 0                 #  switch to turn on (1) and off (0) cuts on muon-jet separation
+user_cut min_R_mujet = 0.               #  requirement on muon-jet separation in y-phi-plane (lower cut);
+                                        #  jets to close to muons are removed by creating a modified jet content
+
+user_switch n_jet_modified = 0          #  switch to turn on (1) and off (0) cuts on number of jets in modified jet content 
+user_int n_jet_min_modified = 0         #  minimal number of jets in modified jet list, eg, R_e/mujet removes jets from original list
+user_int n_jet_max_modified = 2         #  maximal number of jets in modified jet list, eg, R_e/mujet removes jets from original list
+
+user_switch M_leplepnunu  = 0           #  switch to turn on (1) and off (0) cuts on lepton-lepton-nu-nu invariant mass
+user_cut min_M_leplepnunu = 0.          #  requirement on lepton-lepton-nu-nu invariant mass (lower cut)
+user_cut max_M_leplepnunu = 1.e99       #  requirement on lepton-lepton-nu-nu invariant mass (upper cut)
+user_cut min_delta_M_leplepnunu = 0.    #  minimal difference to PDG Z mass
+user_cut max_delta_M_leplepnunu = 1.e99 #  maximal difference to PDG Z mass
+
+user_switch pT_leplep = 1               #  switch to turn on (1) and off (0) cuts on transverse momentum of lepton pair
+user_cut min_pT_leplep = 30.             #  requirement on pT of the lepton pair (lower cut)
+
+user_switch pT_lep_1st = 0             #  switch to turn on (1) and off (0) cuts on pT of hardest lepton
+user_cut min_pT_lep_1st = 25.           #  requirement on pT of hardest lepton (lower cut)
+
+user_switch pT_lep_3rd = 1             #  switch to turn on (1) and off (0) cuts on pT of hardest lepton
+user_cut max_pT_lep_3rd = 10.           #  requirement on pT of hardest lepton (upper cut)
+
+user_switch gap_eta_e = 0               #  switch to turn on (1) and off (0) detector gap for eta of electrons
+user_cut gap_min_eta_e = 1.37           #  lower bound of detector gap in eta
+user_cut gap_max_eta_e = 1.52           #  upper bound of detector gap in eta
+
+user_switch rel_pT_miss = 0             #  switch to turn on (1) and off (0) track-based missing-pT cut
+user_cut min_rel_pT_miss = 15.          #  track-based cut on missing pT (ATLAS, see http://cds.cern.ch/record/1728248)
+
+user_switch phi_leplep = 0              #  switch to turn on (1) and off (0) cuts on lepton-lepton separation
+user_cut min_phi_leplep = 0.            #  requirement on lepton-lepton separation in phi-plane (lower cut)
+user_cut max_phi_leplep = 1.5708        #  requirement on lepton-lepton separation in phi-plane (upper cut)
+
+user_switch phi_leplep_nunu = 0         #  switch to turn on (1) and off (0) cuts on separation between leptons and neutrinos
+user_cut min_phi_leplep_nunu = 1.5708   #  requirement on separation between leptons and neutrinos in phi-plane (lower cut)
+
+# additional cuts used in the ZZ->llnunu analysis:
+user_switch axial_ETmiss = 0            #  switch to turn on (1) and off (0) cut on axial missing ET (see arXiv:1610.07585)
+user_cut min_axial_ETmiss = 0.          #  requirement on axial missing transverse energy (lower cut)
+
+user_switch pT_balance_Zs = 0           #  switch to turn on (1) and off (0) cut on pT balance between Z's (see arXiv:1610.07585)
+user_cut max_pT_balance_Zs = 1.e99      #  requirement on tranvserse-momentum balance between the two Z bosons (upper cut)
+
+# INFO: when highly paralizing, you can try to put a technical cut on the pT of the W's to improve convergence
+user_switch pT_W = 0                    #  switch to turn on cut on transverse momentum of the W-bosons (0) off;
+                                        #  (1) cut on all contributions;
+                                        #  (2) cut only on O(as^2) (non-loop induced) contributions (default)
+user_cut min_pT_W = 0.                  #  requirement on pT of the W-bosons (lower cut)
+user_cut max_pT_W = 1.e99               #  requirement on pT of the W-bosons (upper cut)
+
+
+#-----------------\
+# MATRIX behavior |
+#-----------------/
+max_time_per_job = 12          #  very rough time(hours) one main run job shall take (default: 24h)
+                               #  unreliable when < 1h, use as tuning parameter for degree of parallelization
+                               #  note: becomes ineffective when job number > max_nr_parallel_jobs
+                               #        which is set in MATRIX_configuration file
+switch_distribution = 1        #  switch to turn on (1) and off (0) distributions
+save_previous_result = 1       #  switch to save previous result of this run (in result/"run"/saved_result_$i)
+save_previous_log = 0          #  switch to save previous log of this run (in log/"run"/saved_result_$i)
+#include_pre_in_results = 0     #  switch to (0) only include main run in results; (1) also all extrapolation (pre) runs;
+                               #  crucial to set to 0 if re-running main with different inputs (apart from precision)
+                               #  note: if missing (default) pre runs used if important for precision
+                               #        (separately for each contribution);
+reduce_workload = 0            #  switch to keep full job output (0), reduce (1) or minimize (2) workload on slow clusters
+random_seed = 0                #  specify integer value (grid-/pre-run reproducible)
